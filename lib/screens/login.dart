@@ -77,7 +77,7 @@ class _LoginState extends State<Login> {
                         print(userSignin);
 
                         if (userSignin != null) {
-                          Navigator.pushNamed(context, "chat");
+                          Navigator.pushNamed(context, "home");
                           setState(() {
                             sspin = false;
                           });

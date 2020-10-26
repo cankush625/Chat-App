@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -8,8 +9,10 @@ class AccountRegistration extends StatefulWidget {
 }
 
 class _AccountRegistrationState extends State<AccountRegistration> {
+  var fs = FirebaseFirestore.instance;
   var authc = FirebaseAuth.instance;
 
+  String name;
   String email;
   String password;
 
@@ -25,6 +28,21 @@ class _AccountRegistrationState extends State<AccountRegistration> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
+              TextField(
+                keyboardType: TextInputType.text,
+                onChanged: (value) {
+                  name = value;
+                },
+                decoration: InputDecoration(
+                  hintText: "Enter Name",
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
               TextField(
                 keyboardType: TextInputType.emailAddress,
                 onChanged: (value) {
@@ -69,6 +87,10 @@ class _AccountRegistrationState extends State<AccountRegistration> {
                         email: email,
                         password: password,
                       );
+                      await fs.collection("user").doc(email).set({
+                        "name": name,
+                        "email": email,
+                      });
                       print(email);
                       print(password);
                       print(user);

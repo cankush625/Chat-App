@@ -33,7 +33,7 @@ class _ProfileState extends State<Profile> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Ankush'
+          'Ankush Chavan'
         ),
       ),
       body: SafeArea(
@@ -56,7 +56,7 @@ class _ProfileState extends State<Profile> {
                 Container(
                   margin: EdgeInsets.fromLTRB(10, 360, 0, 0),
                   child: Text(
-                    'Ankush',
+                    'Ankush Chavan',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 30,

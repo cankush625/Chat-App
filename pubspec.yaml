@@ -38,6 +38,8 @@ dependencies:
   google_maps_flutter: ^0.5.33
   geolocator: ^6.1.0
   geocoder: ^0.2.1
+  flutter_icons: ^1.1.0
+  flutter_statusbarcolor: ^0.2.3
 
 dev_dependencies:
   flutter_test:
