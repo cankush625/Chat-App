@@ -12,7 +12,7 @@
         android:label="chat_app"
         android:icon="@mipmap/ic_launcher">
         <meta-data android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyAGEcwSZvPY_A4K-CG7MZ6oD3xrTFereGg"/>
+            android:value="IzaSyAGEcw"/>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
