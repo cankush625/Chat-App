@@ -25,20 +25,25 @@ class _ChatState extends State<Chat> {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.blueAccent[700],
-          leading: Container(
-            margin: EdgeInsets.fromLTRB(5, 5, 5, 5),
-            width: deviceWidth * 0.01,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: NetworkImage(
-                  'https://avatars1.githubusercontent.com/u/41515472?s=400&u=2e83d208268b51f32d5212de73328a501ecd4ce5&v=4',
+          title: Row(
+            children: <Widget>[
+              Container(
+                margin: EdgeInsets.fromLTRB(0, 0, 8, 0),
+                width: deviceWidth * 0.1,
+                height: deviceWidth * 0.1,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: NetworkImage(
+                      'https://avatars1.githubusercontent.com/u/41515472?s=400&u=2e83d208268b51f32d5212de73328a501ecd4ce5&v=4',
+                    ),
+                  ),
+                  borderRadius: BorderRadius.circular(deviceWidth * 0.50),
+                  color: Colors.grey[300],
                 ),
               ),
-              borderRadius: BorderRadius.circular(deviceWidth * 0.50),
-              color: Colors.grey[300],
-            ),
+              Text('Ankush'),
+            ],
           ),
-          title: Text('Chat'),
         ),
         body: FooterLayout(
           child: Column(
