@@ -12,12 +12,12 @@ void main() async {
   runApp(
     MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: "chat",
+      initialRoute: "home",
       routes: {
-        "home": (context) => MyHome(),
-        "reg": (context) => MyReg(),
-        "login": (context) => MyLogin(),
-        "chat": (context) => MyChat(),
+        "home": (context) => Home(),
+        "reg": (context) => AccountRegistration(),
+        "login": (context) => Login(),
+        "chat": (context) => Chat(),
       },
     ),
   );

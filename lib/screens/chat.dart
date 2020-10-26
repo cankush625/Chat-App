@@ -1,30 +1,44 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:keyboard_attachable/keyboard_attachable.dart';
 
-class MyChat extends StatefulWidget {
+class Chat extends StatefulWidget {
   @override
-  _MyChatState createState() => _MyChatState();
+  _ChatState createState() => _ChatState();
 }
 
-class _MyChatState extends State<MyChat> {
-  var msgtextcontroller = TextEditingController();
+class _ChatState extends State<Chat> {
+  var messageTextController = TextEditingController();
 
   var fs = FirebaseFirestore.instance;
   var authc = FirebaseAuth.instance;
 
-  String chatmsg;
+  String chatMessage;
 
   @override
   Widget build(BuildContext context) {
     var deviceWidth = MediaQuery.of(context).size.width;
-    var signInUser = authc.currentUser.email;
+    var currentUserEmail = authc.currentUser.email;
 
     return Scaffold(
         appBar: AppBar(
-          title: Text('chat'),
+          backgroundColor: Colors.blueAccent[700],
+          leading: Container(
+            margin: EdgeInsets.fromLTRB(5, 5, 5, 5),
+            width: deviceWidth * 0.01,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: NetworkImage(
+                  'https://avatars1.githubusercontent.com/u/41515472?s=400&u=2e83d208268b51f32d5212de73328a501ecd4ce5&v=4',
+                ),
+              ),
+              borderRadius: BorderRadius.circular(deviceWidth * 0.50),
+              color: Colors.grey[300],
+            ),
+          ),
+          title: Text('Chat'),
         ),
         body: FooterLayout(
           child: Column(
@@ -44,7 +58,7 @@ class _MyChatState extends State<MyChat> {
                   ),
                 ),
                 decoration: BoxDecoration(
-                  color: Colors.yellowAccent[100],
+                  color: Colors.blueAccent[100],
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
@@ -63,7 +77,6 @@ class _MyChatState extends State<MyChat> {
                           scrollDirection: Axis.vertical,
                           child: StreamBuilder<QuerySnapshot>(
                             builder: (context, snapshot) {
-                              print('new data comes');
 
                               var msg = snapshot.data.docs;
                               // print(msg);
@@ -74,6 +87,7 @@ class _MyChatState extends State<MyChat> {
                                 // print(d.data()['sender']);
                                 var msgText = d.data()['text'];
                                 var msgSender = d.data()['sender'];
+                                print("****************" +d.id);
                                 var msgWidget = Column(
                                   children: <Widget>[
                                     Container(
@@ -81,7 +95,7 @@ class _MyChatState extends State<MyChat> {
                                       padding: EdgeInsets.symmetric(horizontal: 10),
                                       height: 30,
                                       decoration: BoxDecoration(
-                                        color: Colors.lightGreen[200],
+                                        color: Colors.lightBlueAccent[100],
                                         borderRadius: BorderRadius.circular(10),
                                       ),
                                       child: Padding(
@@ -125,27 +139,45 @@ class _MyChatState extends State<MyChat> {
           footer: Row(
             children: <Widget>[
               Container(
-                width: deviceWidth * 0.70,
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                margin: EdgeInsets.fromLTRB(deviceWidth * 0.01, 0, deviceWidth * 0.01, 5),
+                width: deviceWidth * 0.84,
                 child: TextField(
-                  controller: msgtextcontroller,
-                  decoration: InputDecoration(hintText: 'Enter msg ..'),
+                  controller: messageTextController,
+                  decoration: InputDecoration(
+                    hintText: 'Type your message...',
+                    border: InputBorder.none,
+                    focusedBorder: InputBorder.none,
+                    enabledBorder: InputBorder.none,
+                    errorBorder: InputBorder.none,
+                    disabledBorder: InputBorder.none,
+                  ),
                   onChanged: (value) {
-                    chatmsg = value;
+                    chatMessage = value;
                   },
+                ),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(deviceWidth * 42.5),
+                  color: Colors.grey[300],
                 ),
               ),
               Container(
-                width: deviceWidth * 0.20,
+                width: deviceWidth * 0.14,
+                padding: EdgeInsets.only(bottom: 5),
                 child: FlatButton(
-                  child: Text('send'),
+                  child: Icon(
+                    Icons.send,
+                    color: Colors.blueAccent[700],
+                    size: 35,
+                  ),
                   onPressed: () async {
-                    msgtextcontroller.clear();
+                    messageTextController.clear();
 
                     await fs.collection("chat").add({
-                      "text": chatmsg,
-                      "sender": signInUser,
+                      "text": chatMessage,
+                      "sender": currentUserEmail,
                     });
-                    print(signInUser);
+                    print(currentUserEmail);
                   },
                 ),
               ),

@@ -2,12 +2,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-class MyReg extends StatefulWidget {
+class AccountRegistration extends StatefulWidget {
   @override
-  _MyRegState createState() => _MyRegState();
+  _AccountRegistrationState createState() => _AccountRegistrationState();
 }
 
-class _MyRegState extends State<MyReg> {
+class _AccountRegistrationState extends State<AccountRegistration> {
   var authc = FirebaseAuth.instance;
 
   String email;
