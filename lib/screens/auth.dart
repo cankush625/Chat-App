@@ -10,15 +10,22 @@ class _AuthState extends State<Auth> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Home Chat'),
+        title: Text('ChatApp'),
+        backgroundColor: Colors.blueAccent[700],
       ),
       body: Center(
         child: Container(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
+              Image.asset(
+                'assets/ChatApp.png',
+              ),
+              SizedBox(
+                height: 50,
+              ),
               Material(
-                color: Colors.lightBlueAccent,
+                color: Colors.blueAccent[700],
                 borderRadius: BorderRadius.circular(10),
                 elevation: 10,
                 child: MaterialButton(
@@ -34,7 +41,7 @@ class _AuthState extends State<Auth> {
                 height: 40,
               ),
               Material(
-                color: Colors.lightBlueAccent,
+                color: Colors.blueAccent[700],
                 borderRadius: BorderRadius.circular(10),
                 elevation: 10,
                 child: MaterialButton(
