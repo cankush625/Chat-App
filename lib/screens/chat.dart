@@ -1,13 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:keyboard_attachable/keyboard_attachable.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:geocoder/geocoder.dart';
 
 class Chat extends StatefulWidget {
   @override
   _ChatState createState() => _ChatState();
 }
+
+Map<String, Position> geoPosition;
 
 class _ChatState extends State<Chat> {
   var messageTextController = TextEditingController();
@@ -21,24 +25,60 @@ class _ChatState extends State<Chat> {
   Widget build(BuildContext context) {
     var deviceWidth = MediaQuery.of(context).size.width;
     var currentUserEmail = authc.currentUser.email;
+    var addresses;
+    var first;
+
+    Future<Map<String, String>> _getPlaceMark(Position position) async {
+      final CameraPosition _myLocation = CameraPosition(target: LatLng(position.latitude, position.longitude),);
+      final coordinates = new Coordinates(position.latitude, position.longitude);
+      addresses = await Geocoder.local.findAddressesFromCoordinates(coordinates);
+      first = addresses.first;
+      return {'featureName': first.featureName, 'countryName': first.countryName, 'postalCode': first.postalCode, 'state': first.adminArea, 'district': first.subAdminArea};
+    }
 
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.blueAccent[700],
           title: Row(
             children: <Widget>[
-              Container(
-                margin: EdgeInsets.fromLTRB(0, 0, 8, 0),
-                width: deviceWidth * 0.1,
-                height: deviceWidth * 0.1,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: NetworkImage(
-                      'https://avatars1.githubusercontent.com/u/41515472?s=400&u=2e83d208268b51f32d5212de73328a501ecd4ce5&v=4',
+              GestureDetector(
+                onTap: () async {
+                  Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+                  Future<Map<String, String>> placeMark = _getPlaceMark(position);
+                  String featureName;
+                  String countryName;
+                  String postalCode;
+                  String state;
+                  String district;
+                  await placeMark.then((value) => {
+                    featureName = value['featureName'],
+                    countryName = value['countryName'],
+                    postalCode = value['postalCode'],
+                    state = value['state'],
+                    district = value['district'],
+                  });
+                  Navigator.pushNamed(context, 'profile', arguments: {
+                    'location': position,
+                    'featureName': featureName,
+                    'countryName': countryName,
+                    'postalCode': postalCode,
+                    'state': state,
+                    'district': district,
+                  });
+                },
+                child: Container(
+                  margin: EdgeInsets.fromLTRB(0, 0, 8, 0),
+                  width: deviceWidth * 0.1,
+                  height: deviceWidth * 0.1,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: NetworkImage(
+                        'https://avatars1.githubusercontent.com/u/41515472?s=400&u=2e83d208268b51f32d5212de73328a501ecd4ce5&v=4',
+                      ),
                     ),
+                    borderRadius: BorderRadius.circular(deviceWidth * 0.50),
+                    color: Colors.grey[300],
                   ),
-                  borderRadius: BorderRadius.circular(deviceWidth * 0.50),
-                  color: Colors.grey[300],
                 ),
               ),
               Text('Ankush'),
