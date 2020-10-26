@@ -35,6 +35,7 @@ class _ProfileState extends State<Profile> {
         title: Text(
           'Ankush Chavan'
         ),
+        backgroundColor: Colors.blueAccent[700],
       ),
       body: SafeArea(
         child: Column(
