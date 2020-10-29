@@ -127,8 +127,7 @@ class _ChatState extends State<Chat> {
                             List<Widget> y = [];
                             for (var d in msg) {
                               var msgText = d.data()['text'];
-                              var msgSender = d.data()['name'];
-                              print("****************" +d.id);
+                              var time = d.data()['time'];
                               var msgWidget = Column(
                                 children: <Widget>[
                                   Container(
@@ -140,11 +139,27 @@ class _ChatState extends State<Chat> {
                                       borderRadius: BorderRadius.circular(10),
                                     ),
                                     child: Padding(
-                                      padding: const EdgeInsets.only(top: 5.0),
-                                      child: Text(
-                                        "$msgText : $msgSender",
-                                        style: TextStyle(
-                                          fontSize: 16,
+                                      padding: const EdgeInsets.fromLTRB(0, 5, 0, 4),
+                                      child: FittedBox(
+                                        child: Row(
+                                          children: <Widget>[
+                                            Text(
+                                              "$msgText",
+                                              style: TextStyle(
+                                                fontSize: 11,
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: EdgeInsets.fromLTRB(deviceWidth * 0.01, deviceWidth * 0.005, 0, 0),
+                                              child: Text(
+                                                "$time",
+                                                style: TextStyle(
+                                                  fontSize: 8,
+                                                  color: Colors.grey,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ),
                                     ),
@@ -215,11 +230,13 @@ class _ChatState extends State<Chat> {
                       messageTextController.clear();
                       await fs.collection("user").doc(currentUserEmail)
                           .get().then((value) => currentUser = value["name"].toString());
+                      var time = "${DateTime.now().hour}:${DateTime.now().minute}";
 
                       await fs.collection("chat").add({
                         "text": chatMessage,
                         "sender": currentUserEmail,
                         "name": currentUser,
+                        "time": time,
                       });
                       print(currentUserEmail);
                     },
